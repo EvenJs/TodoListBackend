@@ -1,16 +1,29 @@
-version: '3.8'
+version: "3.8"
 
 services:
   mongo:
     image: mongo:7
-    restart: always
+    container_name: todo-mongo
     ports:
       - "27017:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_ROOT_PASSWORD: example
     volumes:
-      - mongodb:/data/db
+      - mongo-data:/data/db
+
+  backend:
+    build: .
+    container_name: todo-backend
+    ports:
+      - "4000:4000"
+    env_file:
+      - .env
+    depends_on:
+      - mongo
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
 
 volumes:
-  mongodb:
+  mongo-data:
