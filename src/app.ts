@@ -1,7 +1,14 @@
 import express, { Request, Response } from "express";
+import dotenv from "dotenv";
+import { connectDB } from "./db.js";
+
+dotenv.config();
+connectDB();
 
 const app = express();
-const port: number = 3000;
+
+// Convert PORT to number, fallback to 4000
+const port: number = parseInt(process.env.PORT || "4000", 10);
 
 // GET /
 app.get("/", (req: Request, res: Response) => {

@@ -1,14 +1,29 @@
 {
   "compilerOptions": {
+    // Environment
     "target": "ES2022",
-    "module": "node16",
-    "moduleResolution": "node16",
-    "esModuleInterop": true,
+    "module": "nodenext",
     "strict": true,
+    "esModuleInterop": true,
     "skipLibCheck": true,
-    "outDir": "dist"
+    // Output
+    "outDir": "./dist",
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    // Type checking
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "isolatedModules": true,
+    // Node types
+    "types": [
+      "node"
+    ]
   },
   "include": [
     "src"
-  ]
+  ],
+  "ts-node": {
+    "esm": true
+  }
 }
