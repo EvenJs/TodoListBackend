@@ -11,6 +11,13 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: password
     volumes:
       - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - todo-network
 
   backend:
     build: .
@@ -20,10 +27,17 @@ services:
     env_file:
       - .env
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+    networks:
+      - todo-network
 
 volumes:
   mongo-data:
+
+networks:
+  todo-network:
+    driver: bridge

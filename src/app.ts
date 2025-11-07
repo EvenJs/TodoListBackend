@@ -1,5 +1,7 @@
 import express, { Request, Response } from "express";
 import dotenv from "dotenv";
+import cors from "cors";
+
 import { connectDB } from "./db.js";
 import todoRoutes from "./routes/todo.js";
 
@@ -9,6 +11,14 @@ connectDB();
 const app = express();
 
 app.use(express.json());
+
+// CORS middleware
+app.use(cors({
+  origin: 'http://localhost:5173', // Your Vite frontend URL
+  credentials: true
+}));
+
+
 // GET /
 app.use("/tasks", todoRoutes);
 app.get("/", (req: Request, res: Response) => {
