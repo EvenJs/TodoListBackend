@@ -26,11 +26,47 @@ export const getTodos = async (req: Request, res: Response) => {
       .skip((pageNum - 1) * limitNum);
 
     const total = await Todo.countDocuments(filter);
+
+    // Calculate statistics for ALL todos (ignoring filters)
+    const stats = await Todo.aggregate([
+      {
+        $group: {
+          _id: null,
+          total: { $sum: 1 },
+          completed: {
+            $sum: { $cond: [{ $eq: ['$status', 'completed'] }, 1, 0] }
+          },
+          inProgress: {
+            $sum: { $cond: [{ $eq: ['$status', 'in_progress'] }, 1, 0] }
+          },
+          notStarted: {
+            $sum: { $cond: [{ $eq: ['$status', 'not_started'] }, 1, 0] }
+          }
+        }
+      }
+    ]);
+
+    // If no todos exist, return zeros
+    const statsResult = stats.length > 0 ? stats[0] : {
+      total: 0,
+      completed: 0,
+      inProgress: 0,
+      notStarted: 0
+    };
+
+    // Remove the _id field and add progress percentage
+    const { _id, ...cleanStats } = statsResult;
+
+
     res.json({
       todos,
       totalPages: Math.ceil(total / limitNum),
       currentPage: pageNum,
       total,
+      stats: {
+        ...cleanStats,
+        progress: cleanStats.total > 0 ? Math.round((cleanStats.completed / cleanStats.total) * 100) : 0
+      }
     });
   } catch (error: any) {
     res.status(500).json({ error: error.message || "Failed to fetch todos" });
@@ -109,7 +145,33 @@ export const updateTodoStatus = async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'Todo not found' });
     }
 
-    res.json(todo);
+    // Get updated statistics after status change
+    const stats = await Todo.aggregate([
+      {
+        $group: {
+          _id: null,
+          total: { $sum: 1 },
+          completed: {
+            $sum: { $cond: [{ $eq: ['$status', 'completed'] }, 1, 0] }
+          },
+          inProgress: {
+            $sum: { $cond: [{ $eq: ['$status', 'in_progress'] }, 1, 0] }
+          },
+          notStarted: {
+            $sum: { $cond: [{ $eq: ['$status', 'not_started'] }, 1, 0] }
+          }
+        }
+      }
+    ]);
+    const { _id, ...cleanStats } = stats[0]
+
+    res.json({
+      todo,
+      stats: {
+        ...cleanStats,
+        progress: cleanStats.total > 0 ? Math.round((cleanStats.completed / cleanStats.total) * 100) : 0
+      }
+    });
   } catch (error) {
     res.status(400).json({ error: (error as Error).message });
   }
