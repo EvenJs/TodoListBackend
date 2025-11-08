@@ -1,22 +1,43 @@
-# TodoListBackend
+# 🧠 Todo List API (Backend)
 
-Challenge
+A simple RESTful API built with **Express**, **TypeScript**, and **MongoDB** (via Mongoose).  
+It provides CRUD operations for a Todo list and can be run locally or with Docker.
 
-Build a basic to do list API and provide clear documentation explaining how you built it and how it works.
+## Project Structure
 
-Goal
+src/
+├── models/ # MongoDB models
+│ └── Todo.ts # Todo schema and model
+├── routes/ # Express routes
+│ └── todoRoutes.ts # Todo API endpoints
+├── controllers/ # Route controllers
+│ └── todoController.ts # Business logic
+├── config/ # Configuration files
+│ └── database.ts # MongoDB connection
+├── types/ # TypeScript type definitions
+│ └── todo.ts # Todo-related types
+└── constants/ # Application constants
+└── todo.ts # Status constants
 
-Create a simple REST API that allows users to manage a to-do list.
+## 2️⃣ Install Dependencies
 
-Requirements
+```bash
+npm install
+```
 
-Implement a REST API with the following endpoints:
+## 🧱 Run Locally (Dev Mode)
 
-GET /tasks
-Returns a list of tasks.
-POST /tasks
-Adds a new task.
-PUT /tasks/:id
-Updates a task (e.g., mark as completed).
-DELETE /tasks/:id
-Deletes a task.
+first need to run database in docker then you don't need to install and setup mongodb locally
+
+```bash
+docker compose up -d mongo
+
+npm run dev
+```
+
+## 🐳 Run with Docker (Recommended database and backend will create together)
+
+```bash
+cp .env.docker .env
+docker compose up --build
+```
