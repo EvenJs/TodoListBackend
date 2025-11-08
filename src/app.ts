@@ -2,8 +2,8 @@ import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 
-import { connectDB } from "./db.js";
-import todoRoutes from "./routes/todo.js";
+import { connectDB } from "./db";
+import todoRoutes from "./routes/todo";
 
 dotenv.config();
 connectDB();
@@ -31,3 +31,5 @@ const port: number = parseInt(process.env.PORT || "4000", 10);
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
+
+export default app;

@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
-import { Todo } from "../models/Todo.js";
-import { TASK_STATUS, NOT_STARTED } from "../constant.js";
+import { Todo } from "../models/Todo";
+import { TASK_STATUS, NOT_STARTED } from "../constants";
 
 export const getTodos = async (req: Request, res: Response) => {
   try {

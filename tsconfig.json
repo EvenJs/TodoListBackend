@@ -17,7 +17,8 @@
     "isolatedModules": true,
     // Node types
     "types": [
-      "node"
+      "node",
+      "jest"
     ]
   },
   "include": [

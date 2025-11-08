@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { NOT_STARTED, TASK_STATUS } from "../constant.js";
+import { NOT_STARTED, TASK_STATUS } from "../constants";
 
 const todoSchema = new mongoose.Schema(
   {
