@@ -41,3 +41,8 @@ npm run dev
 cp .env.docker .env
 docker compose up --build
 ```
+
+## Future Improvements
+
+- Generate API documentation
+- Add proper logging and monitoring
