@@ -5,6 +5,7 @@ It provides CRUD operations for a Todo list and can be run locally or with Docke
 
 ## Project Structure
 
+```
 src/
 ├── models/ # MongoDB models
 │ └── Todo.ts # Todo schema and model
@@ -18,6 +19,7 @@ src/
 │ └── todo.ts # Todo-related types
 └── constants/ # Application constants
 └── todo.ts # Status constants
+```
 
 ## 2️⃣ Install Dependencies
 
